@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import { prizes } from '../../data/prizes';
 
-export default function WaypointModal({ month, day, prize, onClose }) {
+export default function WaypointModal({ month, day, prize, onClose, setCurrentIsland }) {
   const { claimReward, user, validateDayClick } = useGame();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -74,6 +74,11 @@ export default function WaypointModal({ month, day, prize, onClose }) {
     }
   };
 
+  const handleLoginClick = () => {
+    onClose();
+    setCurrentIsland(null); // Redirect to Islands page
+  };
+
   return (
     <div 
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -130,7 +135,10 @@ export default function WaypointModal({ month, day, prize, onClose }) {
 
         <div className="flex justify-end gap-2">
           {!user.id ? (
-            <p className="text-sm text-gray-600 italic mr-auto">
+            <p 
+              className="text-sm text-blue-600 italic mr-auto cursor-pointer hover:text-blue-800"
+              onClick={handleLoginClick}
+            >
               Login to claim this prize
             </p>
           ) : null}

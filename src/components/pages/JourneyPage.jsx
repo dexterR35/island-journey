@@ -82,7 +82,10 @@ export default function JourneyPage({ currentIsland, setCurrentIsland }) {
           
           {/* Waypoints Section */}
           <div className="bg-white rounded-lg p-4 shadow-lg">
-            <JourneyPath monthKey={currentIsland} />
+            <JourneyPath 
+              monthKey={currentIsland} 
+              setCurrentIsland={setCurrentIsland}
+            />
           </div>
           
           {/* Rest of Content */}
@@ -95,7 +98,10 @@ export default function JourneyPage({ currentIsland, setCurrentIsland }) {
         <div className="hidden lg:flex gap-8 w-full">
           {/* Left side - Waypoints */}
           <div className="w-1/4 bg-white rounded-lg p-4 shadow-lg">
-            <JourneyPath monthKey={currentIsland} />
+            <JourneyPath 
+              monthKey={currentIsland} 
+              setCurrentIsland={setCurrentIsland}
+            />
           </div>
 
           {/* Right side - Content */}

@@ -4,7 +4,7 @@ import Waypoint from './Waypoint';
 import WaypointModal from './WaypointModal';
 import { formatMonth } from '../../utils/dateUtils';
 
-export default function JourneyPath({ monthKey }) {
+export default function JourneyPath({ monthKey, setCurrentIsland }) {
   const { getWaypointStatus } = useGame();
   const [activeModal, setActiveModal] = useState(null);
   const [showTooltip, setShowTooltip] = useState(true);
@@ -52,6 +52,7 @@ export default function JourneyPath({ monthKey }) {
           month={activeModal.month}
           day={activeModal.day}
           onClose={() => setActiveModal(null)}
+          setCurrentIsland={setCurrentIsland}
         />
       )}
     </div>
