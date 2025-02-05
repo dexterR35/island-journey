@@ -1,8 +1,54 @@
+import { useState, useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import JourneyPath from '../journey/JourneyPath';
 import PageContent from '../layout/PageContent';
+import LoginReminderModal from '../modals/LoginReminderModal';
 
 export default function JourneyPage({ currentIsland, setCurrentIsland }) {
+  const { user } = useGame();
+  const [showLoginReminder, setShowLoginReminder] = useState(false);
+  const [reminderCount, setReminderCount] = useState(0);
+
+  // Show login reminder after initial 5 seconds if not logged in
+  useEffect(() => {
+    let timer;
+    if (!user?.id && reminderCount === 0) {
+      timer = setTimeout(() => {
+        setShowLoginReminder(true);
+        setReminderCount(prev => prev + 1);
+      }, 5000);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [user?.id, reminderCount]);
+
+  const handleMaybeLater = () => {
+    setShowLoginReminder(false);
+    
+    // Set timer for 20 seconds if it's not the second reminder
+    if (reminderCount < 2) {
+      setTimeout(() => {
+        if (!user?.id) {
+          setShowLoginReminder(true);
+          setReminderCount(prev => prev + 1);
+        }
+      }, 20000);
+    }
+  };
+
+  const handleClose = () => {
+    setShowLoginReminder(false);
+    setReminderCount(2); // Prevent further reminders
+  };
+
+  const handleLoginClick = () => {
+    setShowLoginReminder(false);
+    setReminderCount(2); // Prevent further reminders
+    setCurrentIsland(null); // Go back to Islands page
+  };
+
   const handleBack = () => {
     setCurrentIsland(null);
   };
@@ -58,6 +104,15 @@ export default function JourneyPage({ currentIsland, setCurrentIsland }) {
           </div>
         </div>
       </div>
+
+      {/* Login Reminder Modal */}
+      {showLoginReminder && !user?.id && (
+        <LoginReminderModal 
+          onClose={handleClose}
+          onMaybeLater={handleMaybeLater}
+          onLoginClick={handleLoginClick}
+        />
+      )}
     </div>
   );
 } 
