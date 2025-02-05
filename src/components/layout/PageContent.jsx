@@ -15,13 +15,43 @@ const SPONSOR_GAMES = [
   { name: "Casino Royale", icon: "💫", bonus: "High Roller Bonus" },
 ];
 
-export default function PageContent({ monthKey }) {
+export default function PageContent({ monthKey, mobileView }) {
   const { getCurrentUserCompletedDays } = useGame();
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
 
   // Get current day's prize
   const currentPrize = prizes[monthKey]?.[currentDay];
+
+  if (mobileView) {
+    return (
+      <section>
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <span className="text-blue-500">🎁</span>
+          Today's Prize
+        </h2>
+        {currentPrize && (
+          <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                {currentPrize.type === 'coins' && <span className="text-xl">🪙</span>}
+                {currentPrize.type === 'gem' && <span className="text-xl">💎</span>}
+                {currentPrize.type === 'chest' && <span className="text-xl">🎁</span>}
+                {currentPrize.type === 'potion' && <span className="text-xl">🧪</span>}
+                {currentPrize.type === 'special' && <span className="text-xl">✨</span>}
+              </div>
+              <div>
+                <h3 className="font-bold">{currentPrize.description}</h3>
+                {currentPrize.amount && (
+                  <p className="text-sm text-gray-600">Amount: {currentPrize.amount}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-lg h-full">

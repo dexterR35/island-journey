@@ -8,7 +8,8 @@ export default function JourneyPage({ currentIsland, setCurrentIsland }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+      {/* Header */}
       <div className="flex items-center mb-8">
         <button
           onClick={handleBack}
@@ -19,20 +20,42 @@ export default function JourneyPage({ currentIsland, setCurrentIsland }) {
           </svg>
           Back to Islands
         </button>
-        <h1 className="text-3xl font-bold text-center flex-1">
+        <h1 className="text-2xl md:text-3xl font-bold text-center flex-1">
           Journey Path
         </h1>
       </div>
 
-      <div className="flex gap-8">
-        {/* Left side - Waypoints */}
-        <div className="w-1/4 bg-white rounded-lg p-4 shadow-lg">
-          <JourneyPath monthKey={currentIsland} />
+      {/* Main Content */}
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
+        {/* Mobile: Full width sections */}
+        <div className="lg:hidden space-y-4 w-full">
+          {/* Special Offers Section */}
+          <div className="bg-white rounded-lg p-4 shadow-lg">
+            <PageContent monthKey={currentIsland} mobileView={true} />
+          </div>
+          
+          {/* Waypoints Section */}
+          <div className="bg-white rounded-lg p-4 shadow-lg">
+            <JourneyPath monthKey={currentIsland} />
+          </div>
+          
+          {/* Rest of Content */}
+          <div className="bg-white rounded-lg p-4 shadow-lg">
+            <PageContent monthKey={currentIsland} mobileView={false} />
+          </div>
         </div>
 
-        {/* Right side - Content */}
-        <div className="w-3/4">
-          <PageContent monthKey={currentIsland} />
+        {/* Desktop: Side-by-side layout */}
+        <div className="hidden lg:flex gap-8 w-full">
+          {/* Left side - Waypoints */}
+          <div className="w-1/4 bg-white rounded-lg p-4 shadow-lg">
+            <JourneyPath monthKey={currentIsland} />
+          </div>
+
+          {/* Right side - Content */}
+          <div className="w-3/4">
+            <PageContent monthKey={currentIsland} />
+          </div>
         </div>
       </div>
     </div>
