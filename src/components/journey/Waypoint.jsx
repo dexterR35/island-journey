@@ -2,21 +2,24 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import WaypointModal from './WaypointModal';
 
-export default function Waypoint({ month, day, status }) {
+export default function Waypoint({ month, day, status, onClick }) {
   const [showModal, setShowModal] = useState(false);
   const { rewards, validateDayClick } = useGame();
 
   const handleClick = async () => {
-    try {
-      const result = await validateDayClick(month, day);
-      if (result.canOpen) {
-        setShowModal(true);
-      } else {
-        alert(result.message);
-      }
-    } catch (error) {
-      console.error('Error handling click:', error);
-    }
+    onClick();
+  };
+
+  const getStatusText = () => {
+    const currentDate = new Date();
+    const wayPointDate = new Date(month.split('-')[0], parseInt(month.split('-')[1]) - 1, day);
+    
+    if (status === 'completed') return 'Claimed';
+    if (status === 'active') return 'Available';
+    if (status === 'locked') return 'Locked';
+    
+    // Check if date is in the past
+    return wayPointDate < currentDate ? 'Outdated' : 'Coming Soon';
   };
 
   return (
@@ -35,9 +38,7 @@ export default function Waypoint({ month, day, status }) {
         <div className="flex-1">
           <div className="text-sm font-medium">Day {day}</div>
           <div className="text-xs opacity-75">
-            {status === 'completed' ? 'Claimed' :
-             status === 'active' ? 'Available' :
-             status === 'locked' ? 'Locked' : 'Coming Soon'}
+            {getStatusText()}
           </div>
         </div>
       </div>
